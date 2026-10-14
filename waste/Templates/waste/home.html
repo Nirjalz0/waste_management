@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdant — Waste Management, Routed Intelligently</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#182619;
+    --paper:#ECE6D6;
+    --paper-hi:#F7F3E8;
+    --moss:#3E6B4B;
+    --moss-deep:#2B4E36;
+    --teal:#28504E;
+    --amber:#D6A03D;
+    --line: rgba(24,38,25,0.14);
+    --radius-sm: 4px;
+    --radius-md: 10px;
+    --maxw: 1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(236,230,214,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-size:1.28rem; font-weight:600;
+  }
+  .brand .mark{width:26px; height:26px; flex-shrink:0;}
+  .navlinks{display:flex; gap:34px; font-size:0.95rem;}
+  .navlinks a{text-decoration:none; color:var(--ink); opacity:0.75; transition:opacity .15s;}
+  .navlinks a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--moss-deep); color:var(--paper-hi);
+    padding:10px 20px; border-radius:var(--radius-sm);
+    text-decoration:none; font-size:0.92rem; font-weight:500;
+    transition:background .15s;
+  }
+  .nav-cta:hover{background:var(--ink);}
+  .navlinks-mobile{display:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:88px 32px 64px;
+    max-width:var(--maxw); margin:0 auto;
+    display:grid; grid-template-columns:1.05fr 0.95fr;
+    gap:56px; align-items:center;
+  }
+  .hero-eyebrow{
+    font-size:0.88rem; color:var(--moss-deep); font-weight:500;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height:1.06;
+    color:var(--ink);
+  }
+  .hero p.lede{
+    margin:26px 0 0; max-width:46ch;
+    font-size:1.08rem; color:#3a463b;
+  }
+  .hero-actions{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+  .btn-primary, .btn-ghost{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px; border-radius:var(--radius-sm);
+    font-size:0.96rem; font-weight:500; text-decoration:none;
+    border:1px solid transparent; cursor:pointer;
+    transition:transform .12s ease, background .15s;
+  }
+  .btn-primary{background:var(--moss); color:var(--paper-hi);}
+  .btn-primary:hover{background:var(--moss-deep); transform:translateY(-1px);}
+  .btn-ghost{border-color:var(--ink); color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink); color:var(--paper-hi);}
+
+  .hero-proof{
+    margin-top:44px; display:flex; gap:36px; flex-wrap:wrap;
+  }
+  .hero-proof div{font-size:0.86rem; color:#54604f;}
+  .hero-proof strong{
+    display:block; font-family:'Fraunces', serif; font-size:1.5rem;
+    color:var(--ink); font-weight:500;
+  }
+
+  /* ---------- Hero visual: route diagram ---------- */
+  .route-card{
+    background:var(--paper-hi);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:22px;
+  }
+  .route-card-head{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:14px; font-size:0.82rem; color:#54604f;
+  }
+  .route-card-head .dot-live{
+    display:inline-flex; align-items:center; gap:6px; color:var(--moss-deep); font-weight:500;
+  }
+  .dot-live::before{
+    content:''; width:7px; height:7px; border-radius:50%;
+    background:var(--moss); display:inline-block;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;} 50%{opacity:0.35;}
+  }
+  .route-svg-frame{
+    background:var(--paper); border-radius:var(--radius-sm);
+    padding:8px;
+  }
+  .route-path{
+    stroke-dasharray:6 240; stroke-dashoffset:0;
+    animation:travel 5s linear infinite;
+  }
+  @keyframes travel{
+    from{stroke-dashoffset:0;}
+    to{stroke-dashoffset:-246;}
+  }
+  .bin-fill-list{margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .bin-fill-row{display:grid; grid-template-columns:74px 1fr 34px; align-items:center; gap:10px; font-size:0.8rem; color:#3a463b;}
+  .bin-fill-track{height:7px; background:var(--line); border-radius:4px; overflow:hidden;}
+  .bin-fill-bar{height:100%; border-radius:4px; background:var(--teal);}
+  .bin-fill-bar.high{background:var(--amber);}
+
+  /* ---------- Stats strip ---------- */
+  .stats{
+    background:var(--moss-deep); color:var(--paper-hi);
+    padding:52px 32px;
+  }
+  .stats-inner{
+    max-width:var(--maxw); margin:0 auto;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  }
+  .stat b{
+    display:block; font-family:'Fraunces', serif; font-weight:500;
+    font-size:2.3rem;
+  }
+  .stat span{font-size:0.86rem; opacity:0.78;}
+
+  /* ---------- How it works ---------- */
+  .section{padding:96px 32px;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head h2{font-size:clamp(1.9rem,3vw,2.5rem); color:var(--ink);}
+  .section-head p{margin-top:14px; color:#3a463b; font-size:1.02rem; max-width:52ch;}
+
+  .steps{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+    max-width:var(--maxw); margin:0 auto;
+    border-top:1px solid var(--line);
+  }
+  .step{
+    padding:32px 28px 0; border-right:1px solid var(--line);
+  }
+  .step:last-child{border-right:none;}
+  .step-num{
+    font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--moss);
+    display:block; margin-bottom:18px;
+  }
+  .step h3{font-size:1.22rem; margin-bottom:10px; color:var(--ink);}
+  .step p{font-size:0.94rem; color:#4a564b; margin:0;}
+
+  /* ---------- Features (asymmetric) ---------- */
+  .features{max-width:var(--maxw); margin:0 auto; padding:0 32px 96px;}
+  .feat-grid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+    gap:20px;
+  }
+  .feat-card{
+    background:var(--paper-hi); border:1px solid var(--line);
+    border-radius:var(--radius-md); padding:32px;
+  }
+  .feat-card.tall{grid-row: span 2; display:flex; flex-direction:column; justify-content:space-between;}
+  .feat-card h3{font-size:1.3rem; margin-bottom:10px; color:var(--ink);}
+  .feat-card p{font-size:0.95rem; color:#4a564b; margin:0;}
+  .feat-tag{
+    display:inline-block; font-size:0.76rem; color:var(--moss-deep);
+    background:rgba(62,107,75,0.1); padding:4px 10px; border-radius:20px;
+    margin-bottom:16px; font-weight:500;
+  }
+  .feat-visual{
+    margin-top:24px; border-radius:var(--radius-sm); overflow:hidden;
+    border:1px solid var(--line);
+  }
+
+  /* ---------- Testimonial ---------- */
+  .quote-band{
+    background:var(--teal); color:var(--paper-hi); padding:88px 32px;
+  }
+  .quote-inner{max-width:760px; margin:0 auto; text-align:left;}
+  .quote-inner q{
+    font-family:'Fraunces', serif; font-size:clamp(1.5rem,2.6vw,2rem);
+    line-height:1.3; font-style:normal; quotes:none;
+  }
+  .quote-attr{margin-top:28px; display:flex; align-items:center; gap:14px; font-size:0.9rem; opacity:0.85;}
+  .quote-attr .line{width:36px; height:1px; background:currentColor;}
+
+  /* ---------- CTA footer ---------- */
+  .cta-band{
+    padding:96px 32px; text-align:center;
+  }
+  .cta-band h2{font-size:clamp(2rem,3.4vw,2.7rem); max-width:20ch; margin:0 auto; color:var(--ink);}
+  .cta-band p{margin:18px auto 34px; max-width:46ch; color:#3a463b;}
+  .cta-band .hero-actions{justify-content:center;}
+
+  footer{
+    border-top:1px solid var(--line); padding:36px 32px; font-size:0.85rem; color:#54604f;
+  }
+  .footer-inner{
+    max-width:var(--maxw); margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:920px){
+    .navlinks{display:none;}
+    .hero{grid-template-columns:1fr; padding-top:56px;}
+    .stats-inner{grid-template-columns:repeat(2,1fr); row-gap:32px;}
+    .steps{grid-template-columns:1fr;}
+    .step{border-right:none; border-bottom:1px solid var(--line); padding-bottom:28px; margin-bottom:0;}
+    .feat-grid{grid-template-columns:1fr;}
+    .feat-card.tall{grid-row:auto;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .route-path{animation:none;}
+    .dot-live::before{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 26 26" fill="none">
+        <circle cx="13" cy="13" r="12" stroke="#2B4E36" stroke-width="1.4"/>
+        <path d="M8 14.5C8 11 10.5 8.5 13 8.5C15.8 8.5 18 10.7 18 13" stroke="#2B4E36" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M18 10.5V13H15.5" stroke="#2B4E36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Verdant
+    </div>
+    <nav class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#features">Platform</a>
+      <a href="#results">Results</a>
+    </nav>
+    <a href="#demo" class="nav-cta">Schedule a demo</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Waste &amp; recycling operations software</div>
+    <h1>Every truck, bin, and route — on one map that thinks ahead.</h1>
+    <p class="lede">Verdant replaces the whiteboard and the radio calls with live fill-level data, routes that rebuild themselves around what's actually full, and reports your city can read at a glance.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-primary">Schedule a demo</a>
+      <a href="#how" class="btn-ghost">See how routing works</a>
+    </div>
+    <div class="hero-proof">
+      <div><strong>41%</strong>fewer collection miles driven</div>
+      <div><strong>128</strong>municipalities routed daily</div>
+      <div><strong>6.2M</strong>tons diverted from landfill</div>
+    </div>
+  </div>
+
+  <div class="route-card">
+    <div class="route-card-head">
+      <span>Route 14 — Eastside</span>
+      <span class="dot-live">Live</span>
+    </div>
+    <div class="route-svg-frame">
+      <svg viewBox="0 0 340 210" width="100%">
+        <path d="M20 170 L70 170 L70 100 L140 100 L140 40 L220 40 L220 90 L300 90 L300 150 L320 150"
+              fill="none" stroke="var(--line)" stroke-width="10" stroke-linejoin="round"/>
+        <path class="route-path" d="M20 170 L70 170 L70 100 L140 100 L140 40 L220 40 L220 90 L300 90 L300 150 L320 150"
+              fill="none" stroke="#3E6B4B" stroke-width="2.4" stroke-linejoin="round"/>
+        <circle cx="20" cy="170" r="5" fill="#182619"/>
+        <circle cx="70" cy="100" r="5" fill="#D6A03D"/>
+        <circle cx="140" cy="40" r="5" fill="#28504E"/>
+        <circle cx="220" cy="90" r="5" fill="#D6A03D"/>
+        <circle cx="300" cy="150" r="5" fill="#28504E"/>
+        <circle cx="320" cy="150" r="4" fill="#182619" fill-opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="bin-fill-list">
+      <div class="bin-fill-row">
+        <span>Maple St</span>
+        <div class="bin-fill-track"><div class="bin-fill-bar" style="width:52%"></div></div>
+        <span>52%</span>
+      </div>
+      <div class="bin-fill-row">
+        <span>Depot 3</span>
+        <div class="bin-fill-track"><div class="bin-fill-bar high" style="width:88%"></div></div>
+        <span>88%</span>
+      </div>
+      <div class="bin-fill-row">
+        <span>Harbor Rd</span>
+        <div class="bin-fill-track"><div class="bin-fill-bar" style="width:34%"></div></div>
+        <span>34%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat"><b>41%</b><span>Fewer miles per collection cycle</span></div>
+    <div class="stat"><b>128</b><span>Cities and haulers on Verdant</span></div>
+    <div class="stat"><b>6.2M</b><span>Tons diverted from landfill</span></div>
+    <div class="stat"><b>99.4%</b><span>On-time collection rate</span></div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="section-head wrap" style="padding:0;">
+    <h2>From full bin to filed report, in three steps</h2>
+    <p>No separate systems to reconcile. Sensor data, route logic, and compliance records all live in the same pipeline.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01 — Sense</span>
+      <h3>Bins report themselves</h3>
+      <p>Ultrasonic sensors in bins and dumpsters send fill-level readings every hour, so crews stop guessing and stop driving to bins that are half-empty.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02 — Route</span>
+      <h3>Routes rebuild overnight</h3>
+      <p>Each morning's route is generated from what's actually full, truck capacity, and road restrictions — not last year's static map.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03 — Report</span>
+      <h3>Diversion, logged automatically</h3>
+      <p>Tonnage, contamination flags, and missed-pickup exceptions roll up into the reports your municipality or client already requires.</p>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-head" style="padding:0;">
+    <h2>Built for the whole operation, not just the trucks</h2>
+    <p>Dispatchers, drivers, and residents each get the view they need — pulling from the same live data.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card tall">
+      <div>
+        <span class="feat-tag">Dispatch</span>
+        <h3>A live map that reroutes with you</h3>
+        <p>Drag a stop, flag a blocked street, or add a same-day pickup — the rest of the route adjusts automatically and every driver's tablet updates in seconds.</p>
+      </div>
+      <div class="feat-visual">
+        <svg viewBox="0 0 400 140" width="100%" style="background:var(--paper);">
+          <line x1="20" y1="120" x2="380" y2="120" stroke="var(--line)"/>
+          <line x1="20" y1="20" x2="20" y2="120" stroke="var(--line)"/>
+          <polyline points="20,100 90,90 150,70 210,75 260,45 320,50 370,25" fill="none" stroke="#3E6B4B" stroke-width="2.5"/>
+          <circle cx="150" cy="70" r="4" fill="#D6A03D"/>
+          <circle cx="260" cy="45" r="4" fill="#28504E"/>
+        </svg>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Driver app</span>
+      <h3>Turn-by-turn, built for a truck</h3>
+      <p>Large-touch controls, offline caching for dead zones, and one tap to flag a contaminated load or a blocked alley.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-tag">Resident portal</span>
+      <h3>Fewer "where's my truck" calls</h3>
+      <p>Residents get pickup reminders and real-time truck ETAs, cutting missed-pickup calls to your office by more than half.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quote-band" id="results">
+  <div class="quote-inner">
+    <q>We cut our fleet from nineteen trucks to fourteen in the first season, and our residents finally stopped calling to ask where the truck was.</q>
+    <div class="quote-attr">
+      <div class="line"></div>
+      <div>Director of Public Works, City of Ashbrook (32,000 residents)</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="demo">
+  <h2>See your own routes rebuilt on the map</h2>
+  <p>Bring a week of your current collection data — we'll show you what Verdant would have routed instead, before you sign anything.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Schedule a demo</a>
+    <a href="#" class="btn-ghost">Talk to sales</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 Verdant Systems</span>
+    <span>Privacy · Terms · Contact</span>
+  </div>
+</footer>
+
+</body>
+</html>
